@@ -3,6 +3,12 @@
   "mongoose": {
     "uri": "mongodb://localhost:27017/"
   },
+  "session": {
+    "secret": "keyboard cat",
+    "resave": false,
+    "saveUninitialized": true,
+    "cookie": { "secure": true }
+  },
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
