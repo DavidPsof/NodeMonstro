@@ -1,13 +1,16 @@
 {
   "port": 3000,
   "mongoose": {
-    "uri": "mongodb://localhost:27017/"
+    "uri": "mongodb://localhost:27017/test"
   },
   "session": {
     "secret": "keyboard cat",
-    "resave": false,
-    "saveUninitialized": true,
-    "cookie": { "secure": true }
+    "key": "sid",
+    "cookie": {
+      "path": "/",
+      "httpOnly": true,
+      "maxAge": null
+    }
   },
   "compilerOptions": {
     "module": "commonjs",

@@ -3,11 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var mongoose = require('mongoose');
+var mongoose = require('./libs/mongoose');
 var session = require('express-session');
 var config = require('./config');
 
-mongoose.connect('mongodb://localhost:27017/test',function (err,db) {
+mongoose.connect(config.get('mongoose:uri'),function (err,db) {
   if(err)
     console.log("Unable to connect DB. Error: " + err);
   else
@@ -30,12 +30,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.set('trust proxy', 1); // trust first proxy
+
+var MongoStore = require('connect-mongo')(session);
+
 app.use(session({
   secret: config.get('session:secret'),
-  resave: config.get('session:resave'),
-  saveUninitialized: config.get('session:saveUninitialized'),
-  cookie: config.get('session:cookie')
+  key: config.get('session:key'),
+  cookie: config.get('session:cookie'),
+  store: new MongoStore({
+    mongoose_connection: mongoose.connection,
+    url: config.get('mongoose:uri')
+  })
 }));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
