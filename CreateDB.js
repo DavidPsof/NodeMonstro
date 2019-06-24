@@ -1,12 +1,16 @@
-var User = require('./models/user').User;
+var Document = require('./models/document').Document;
 var mongoose = require('./libs/mongoose');
 var config = require('./config');
 
-var user = new User({
-    username: "Tester34",
-    password: "secret"
+var document = new Document({
+    name: "testDocument2",
+    number: 2,
+    comment: 'Для тестера 2',
+    author: 'Tester',
 });
 
-user.save(function(err, user, affected) {
+
+
+document.save(function(err, user, affected) {
     if (err) throw err;
 });

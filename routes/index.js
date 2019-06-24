@@ -1,20 +1,26 @@
+var Document = require('../models/document').Document;
+var async = require('async');
 var config = require('../config');
 var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    if (req.session.user) {
-        res.render('index', {
-            title: config.get('messages:title:general'),
-            username: req.session.user.username
-        });
-    } else {
-        res.render('index', {
-            title: config.get('messages:title:general'),
-            username: ''
-        });
-    }
+    Document.findDocs(function (documents) {
+        if (req.session.user) {
+            res.render('index', {
+                title: config.get('messages:title:general'),
+                username: req.session.user.username,
+                documents: documents
+            });
+        } else {
+            res.render('index', {
+                title: config.get('messages:title:general'),
+                username: ''
+            });
+        }
+    });
+
 
 });
 router.get('/login', require('./login').get);
@@ -24,5 +30,7 @@ router.get('/registrate', require('./registration').get);
 router.post('/registrate', require('./registration').post);
 
 router.post('/logout', require('./logout').post);
+
+router.get('/document/:id', require('./document').get);
 
 module.exports = router;
