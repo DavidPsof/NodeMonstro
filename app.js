@@ -7,18 +7,6 @@ var mongoose = require('./libs/mongoose');
 var session = require('express-session');
 var config = require('./config');
 
-mongoose.connect(config.get('mongoose:uri'),function (err,db) {
-  if(err)
-    console.log("Unable to connect DB. Error: " + err);
-  else
-    console.log('Connected to DB');
-
-  db.close();
-});
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
 var app = express();
 
 // view engine setup
@@ -40,13 +28,16 @@ app.use(session({
   store: new MongoStore({
     mongoose_connection: mongoose.connection,
     url: config.get('mongoose:uri')
-  })
+  }),
+  resave: true,
+  saveUninitialized: true
 }));
+
+app.use(require('./middleware/loadUser'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', require('./routes/index'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

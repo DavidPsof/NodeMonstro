@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    h1 #{title}
+    p #{username}
+    p #{message}
+    form(method='POST' name='login-form')
+        input(type='text' name='username' placeholder='login' id="input-username")
+        br
+        br
+        input(type='password' name='password' placeholder='password' id="input-password")
+        br
+        br
+        input(type='submit' value='Войти')

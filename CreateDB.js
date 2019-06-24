@@ -1,14 +1,12 @@
-// var User = require('./models/user').User;
-//
-// var user = new User({
-//     username: "Tester",
-//     password: "secret"
-// });
-//
-// user.save(function(err, user, affected) {
-//     if (err) throw err;
-//
-//     User.findOne({username: "Tester"}, function(err, tester) {
-//         console.log(tester);
-//     });
-// });
+var User = require('./models/user').User;
+var mongoose = require('./libs/mongoose');
+var config = require('./config');
+
+var user = new User({
+    username: "Tester34",
+    password: "secret"
+});
+
+user.save(function(err, user, affected) {
+    if (err) throw err;
+});

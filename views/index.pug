@@ -1,5 +1,18 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+    if (username != '')
+        p #{username}
+        form(action='/logout' method='POST')
+            input(type='submit' value='выйти')
+
+    h1= title
+
+    #container.col
+        if (username == '')
+            a(href='/login/') Войти
+            br
+            a(href='/registrate/') Зарегистрироваться
+        h3 Список документов
+        ul
+            li
