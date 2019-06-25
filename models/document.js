@@ -91,4 +91,21 @@ schema.statics.updateDocument = function (number, name, comment, callback) {
     ], callback);
 };
 
+schema.statics.deleteDocument = function (number, author, callback) {
+    var Document = mongoose.model('Document', schema);
+    async.waterfall([
+        function (callback) {
+            Document.findOne({number: number}, callback);
+        },
+        function (document, callback) {
+            if (document.author = author) {
+                console.log(document);
+                Document.deleteOne({number: number}, function (err) {
+                    callback(err)
+                });
+            }
+        }
+    ], callback);
+};
+
 exports.Document = mongoose.model('Document', schema);

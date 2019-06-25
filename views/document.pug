@@ -18,3 +18,8 @@ block content
             input(type='text' name='comment' value = comment)
             br
             input(type='submit' value='изменить')
+            br
+        form(action='/deleteDocument' method='POST')
+            input(type='hidden' name='author' value = author)
+            input(type='hidden' name='number' value = number)
+            input(type='submit' value='удалить')
