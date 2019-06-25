@@ -2,9 +2,12 @@ var async = require('async');
 var HttpError = require('../error').HttpError;
 var config = require('../config');
 var mongoose = require('../libs/mongoose');
+var autoIncrement = require('mongoose-auto-increment');
 var Schema = mongoose.Schema;
 
 mongoose.connect(config.get('mongoose:uri'), {useNewUrlParser: true, useCreateIndex: true});
+
+autoIncrement.initialize(mongoose.connection);
 
 var schema = new Schema({
     name: {
@@ -33,7 +36,23 @@ var schema = new Schema({
     }
 });
 
-schema.statics.getAllDocs = function () {
+schema.plugin(autoIncrement.plugin, {model: 'Document', field: 'number'});
+
+schema.statics.addDocument = function (name, comment, author, callback) {
+    var Document = mongoose.model('Document', schema);
+    async.waterfall([
+        function (callback) {
+            var newDocument = new Document({
+                name: name,
+                comment: comment,
+                author: author,
+            });
+            newDocument.save(function (err, document) {
+                if (err) throw err;
+                callback(document);
+            });
+        }
+    ], callback);
 };
 
 schema.statics.findDoc = function (number, callback) {
@@ -48,7 +67,7 @@ schema.statics.findDoc = function (number, callback) {
     ], callback);
 };
 
-schema.statics.findDocs = function(callback){
+schema.statics.findDocs = function (callback) {
     var Document = mongoose.model('Document', schema);
     async.waterfall([
         function (callback) {
@@ -56,6 +75,18 @@ schema.statics.findDocs = function(callback){
         },
         function (documents, callback) {
             callback(documents);
+        }
+    ], callback);
+};
+
+schema.statics.updateDocument = function (number, name, comment, callback) {
+    var Document = mongoose.model('Document', schema);
+    async.waterfall([
+        function (callback) {
+            Document.updateOne({number: number}, {name: name, comment: comment}, function (err, document) {
+                if (err) throw err;
+                callback(document);
+            });
         }
     ], callback);
 };

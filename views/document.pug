@@ -1,8 +1,20 @@
 extends layout
 
 block content
-    h1 Документ #{title}
-    p Автор: #{author}
-    p Описание документа:
-    span #{comment}
-    br
+    if (user.name != author)
+        h1 Документ #{title}
+        p Автор: #{author}
+        p Описание документа:
+        span #{comment}
+        br
+    else
+        h1 ваш Документ #{title}
+        form(action='/updateDocument' method='POST')
+            input(type='hidden' name='author' value = author)
+            input(type='hidden' name='number' value = number)
+            P Изменить имя документа
+            input(type='text' name='name' value = title)
+            P Изменить примечание документа
+            input(type='text' name='comment' value = comment)
+            br
+            input(type='submit' value='изменить')

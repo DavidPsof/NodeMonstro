@@ -11,12 +11,14 @@ router.get('/', function (req, res, next) {
             res.render('index', {
                 title: config.get('messages:title:general'),
                 username: req.session.user.username,
+                user: req.session.user,
                 documents: documents
             });
         } else {
             res.render('index', {
                 title: config.get('messages:title:general'),
-                username: ''
+                username: '',
+                documents: documents
             });
         }
     });
@@ -32,5 +34,7 @@ router.post('/registrate', require('./registration').post);
 router.post('/logout', require('./logout').post);
 
 router.get('/document/:id', require('./document').get);
+router.post('/document/', require('./document').post);
+router.post('/updateDocument/', require('./updateDocument').post);
 
 module.exports = router;
