@@ -37,5 +37,6 @@ router.get('/document/:id', require('./document').get);
 router.post('/document/', require('./document').post);
 router.post('/updateDocument/', require('./updateDocument').post);
 router.post('/deleteDocument/', require('./deleteDocument').post);
+router.get('/documents', require('./document').getDocuments);
 
 module.exports = router;

@@ -6,7 +6,7 @@ var logger = require('morgan');
 var mongoose = require('./libs/mongoose');
 var session = require('express-session');
 var config = require('./config');
-
+var cors = require('cors');
 var app = express();
 
 // view engine setup
@@ -32,6 +32,8 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
+// Add headers
+app.use(cors({origin: 'http://localhost:4200'}));
 
 app.use(require('./middleware/loadUser'));
 

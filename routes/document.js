@@ -21,6 +21,12 @@ exports.get = function (req, res) {
     });
 };
 
+exports.getDocuments = function(req, res){
+  Document.find({}, function (err, docs) {
+    res.json(docs);
+  })
+};
+
 exports.post = function (req, res) {
     var name = req.body.name;
     var comment = req.body.comment;
